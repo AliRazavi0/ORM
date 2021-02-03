@@ -37,7 +37,7 @@ class PDOConnectionImplementPdoTest extends TestCase
     }
 
 
-    public function getConfig()
+    private function getConfig()
     {
         $config = Config::get('database.php', 'pdo_test');
         return $config;
