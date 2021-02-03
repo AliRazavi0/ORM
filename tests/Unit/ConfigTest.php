@@ -29,7 +29,7 @@ class ConfigTest extends TestCase{
         
         $config=Config::getFileContent('database.php');
       
-        $this->assertTrue($config);
+        $this->assertIsArray($config);
 
     }
 }
