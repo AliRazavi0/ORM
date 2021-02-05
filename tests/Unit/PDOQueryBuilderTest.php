@@ -85,6 +85,29 @@ class PDOQueryBuilderTest extends TestCase{
        return $this->queryBuilder->table('bugs')->create($data);
     }
 
+    public function testItCanFetchGetDataWithParams(){
+        $this->multipleInsertIntoDb(10,[
+            'username'=>'Mohammad',
+        ]);
+
+        $result=$this->queryBuilder->table('bugs')->where('username','Mohammad')->get([
+            'username',
+            'email',
+            'subject'
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertObjectHasAttribute('username',$result[0]);
+        $this->assertObjectHasAttribute('email',$result[0]);
+        $this->assertObjectHasAttribute('subject',$result[0]);
+
+        $result=json_decode(json_encode($result[0]),true);
+
+        $this->assertEquals(['username','email','subject'],array_keys($result));
+        
+
+    }
+
     private function multipleInsertIntoDb($count,$options=[]){
         for ($i=1; $i <= $count; $i++) { 
             $this->insertIntoDb($options);
