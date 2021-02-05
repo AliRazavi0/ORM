@@ -125,6 +125,17 @@ class PDOQueryBuilderTest extends TestCase{
         
     }
 
+    public function testItCanFindWithId(){
+        $id=$this->insertIntoDb([
+            'username'=>'Mohammad'
+        ]);
+
+        $result=$this->queryBuilder->table('bugs')->find($id);
+
+        $this->assertIsObject($result);
+        $this->assertEquals('Mohammad',$result->username);
+    }
+
     private function multipleInsertIntoDb($count,$options=[]){
         for ($i=1; $i <= $count; $i++) { 
             $this->insertIntoDb($options);
