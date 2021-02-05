@@ -40,16 +40,26 @@ class PDOQueryBuilderTest extends TestCase{
     }
 
     public function testItCanDeleteRecord(){
-        $this->insertIntoDb();
-        $this->insertIntoDb();
-        $this->insertIntoDb();
-        $this->insertIntoDb();
+        $this->multipleInsertIntoDb(4);
+
 
         $result=$this->queryBuilder->table('bugs')->where('username','AliRazavi')->delete();
 
         $this->assertEquals(4,$result);
 
 
+    }
+    public function testItCanFetchData (){
+        $this->multipleInsertIntoDb(10,[
+            'username'=>'Mohammad',
+        ]);
+
+        $result=$this->queryBuilder->table('bugs')->where('username','Mohammad')->get();
+
+
+        $this->assertIsArray($result);
+
+        $this->assertCount(10,$result);
     }
     private function getConfig()
     {
@@ -62,16 +72,22 @@ class PDOQueryBuilderTest extends TestCase{
         parent::tearDown();
     }
 
-    private function insertIntoDb(){
+    private function insertIntoDb($options=[]){
 
 
-        $data=[
+        $data=array_merge([
             'subject'=>'مشکل در اتصال به دیتایس ',
             'link'=>'http://link.com',
             'username'=>'AliRazavi',
             'email'=>'razavi.ali.1998@gmail.com',
-        ];
+        ],$options);
 
        return $this->queryBuilder->table('bugs')->create($data);
+    }
+
+    private function multipleInsertIntoDb($count,$options=[]){
+        for ($i=1; $i <= $count; $i++) { 
+            $this->insertIntoDb($options);
+        }
     }
 }
