@@ -6,10 +6,44 @@ use App\Database\PDOQueryBuilder;
 use App\Database\PDODatabseConnection;
 
 class PDOQueryBuilderTest extends TestCase{
-    public function testInCanCreateData(){
+    private $queryBuilder;
+
+    public function setUp() :void{
         $pdoConnection=new PDODatabseConnection($this->getConfig());
 
-        $queryBuilder=new PDOQueryBuilder($pdoConnection->connect());
+        $this->queryBuilder=new PDOQueryBuilder($pdoConnection->connect());
+
+        parent::setUp();
+
+    }
+
+    public function testItCanCreateData(){
+        $result=$this->insertIntoDb();
+        $this->assertIsInt($result);
+        $this->assertGreaterThan(0,$result);
+
+    }
+
+
+
+    public function testItCanUpdateData(){
+
+        $this->insertIntoDb();
+        $result=$this->queryBuilder->table('bugs')->where('email','razavi.ali.1998@gmail.com')->update([
+            'email'=>'alirazavi253@gmail.com'
+        ]);
+
+        $this->assertEquals(2,$result);
+
+    }
+    private function getConfig()
+    {
+        $config = Config::get('database.php', 'pdo_test');
+        return $config;
+    }
+
+    private function insertIntoDb(){
+
 
         $data=[
             'subject'=>'مشکل در اتصال به دیتایس ',
@@ -18,17 +52,6 @@ class PDOQueryBuilderTest extends TestCase{
             'email'=>'razavi.ali.1998@gmail.com',
         ];
 
-        $result=$queryBuilder->table('bugs')->create($data);
-
-      
-        $this->assertIsInt($result);
-        $this->assertGreaterThan(0,$result);
-
-    }
-
-    private function getConfig()
-    {
-        $config = Config::get('database.php', 'pdo_test');
-        return $config;
+       return $this->queryBuilder->table('bugs')->create($data);
     }
 }
