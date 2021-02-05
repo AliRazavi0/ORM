@@ -2,6 +2,7 @@
 namespace App\Database;
 
 use App\Contracts\DatabaseConnectionInterface;
+use PDO;
 
 class PDOQueryBuilder{
     protected $table;
@@ -65,5 +66,17 @@ class PDOQueryBuilder{
 
     }
 
+
+    public function truncateAllTable(){
+        
+        $query=$this->connection->prepare('SHOW TABLES');
+ 
+
+        $query->execute();
+
+        foreach($query->fetchAll(PDO::FETCH_COLUMN) as $table){
+            $this->connection->prepare("TRUNCATE TABLE `{$table}`")->execute();
+        }
+    }
 
 }
