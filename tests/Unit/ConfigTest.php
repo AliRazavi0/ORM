@@ -20,7 +20,7 @@ class ConfigTest extends TestCase{
             'db_host'=>'127.0.0.1',
             'db_user'=>'root',
             'db_name'=>'orm',
-            'db_password'=>'123456789'
+            'db_password'=>'password'
         ];
 
         $this->assertEquals($config,$expectData);
