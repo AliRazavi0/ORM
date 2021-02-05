@@ -114,6 +114,10 @@ class PDOQueryBuilder{
         return $this->where('id',$id)->first();
     }
 
+    public function findBy(string $column,$value){
+        return $this->where($column,$value)->first();
+    }
+
     public function beginTransaction(){
         $this->connection->beginTransaction();
     }
