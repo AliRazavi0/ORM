@@ -33,13 +33,18 @@ class PDOQueryBuilderTest extends TestCase{
             'email'=>'alirazavi253@gmail.com'
         ]);
 
-        $this->assertEquals(2,$result);
+        $this->assertEquals(1,$result);
 
     }
     private function getConfig()
     {
         $config = Config::get('database.php', 'pdo_test');
         return $config;
+    }
+
+    public function tearDown() :void{
+        $this->queryBuilder->truncateAllTable();
+        parent::tearDown();
     }
 
     private function insertIntoDb(){
