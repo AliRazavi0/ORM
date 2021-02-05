@@ -91,6 +91,12 @@ class PDOQueryBuilder{
         return $query->rowCount();
     }
 
+    public function first(array $columns=['*']){
+       $data= $this->get($columns);
+
+        return empty($data) ? null : $data[0];
+    }
+
 
     public function truncateAllTable(){
 
