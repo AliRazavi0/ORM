@@ -110,6 +110,10 @@ class PDOQueryBuilder{
         }
     }
 
+    public function find(int $id){
+        return $this->where('id',$id)->first();
+    }
+
     public function beginTransaction(){
         $this->connection->beginTransaction();
     }
