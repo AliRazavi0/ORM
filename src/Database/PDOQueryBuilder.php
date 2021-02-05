@@ -66,10 +66,11 @@ class PDOQueryBuilder{
 
     }
 
-    public function get(){
-        $conditions=implode(' and ',$this->conditions);
+    public function get(array $columns=['*']){
 
-        $sql="SELECT * FROM {$this->table} WHERE {$conditions}";
+        $conditions=implode(' and ',$this->conditions);
+        $columns=implode(',',$columns);
+        $sql="SELECT {$columns} FROM {$this->table} WHERE {$conditions}";
 
         $query=$this->connection->prepare($sql);
         $query->execute($this->values);
